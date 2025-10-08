@@ -196,23 +196,53 @@ Module.register("MMM-UniAssignments", {
 
   notificationReceived(notification, payload) {
     switch (notification) {
+      // Universal dynamic module control
+      case "SHOW_MODULE":
+        if (payload === this.name || payload === "MMM-UniAssignments") {
+          this.currentView = "week";
+          this.loadAssignments();
+          this.show(this.config.animationSpeed);
+        }
+        break;
+
+      case "HIDE_MODULE":
+        if (payload === this.name || payload === "MMM-UniAssignments") {
+          this.currentView = "hidden";
+          this.hide(this.config.animationSpeed);
+        }
+        break;
+
+      case "TOGGLE_MODULE":
+        if (payload === this.name || payload === "MMM-UniAssignments") {
+          if (this.hidden) {
+            this.currentView = "week";
+            this.loadAssignments();
+            this.show(this.config.animationSpeed);
+          } else {
+            this.currentView = "hidden";
+            this.hide(this.config.animationSpeed);
+          }
+        }
+        break;
+
+      // Legacy custom webhooks (still supported)
       case "UNI_SHOW_WEEK":
         this.currentView = "week";
         this.loadAssignments();
-        this.updateDom(this.config.animationSpeed);
+        this.show(this.config.animationSpeed);
         break;
 
       case "UNI_SHOW_MODULE":
         this.currentView = "module";
         this.selectedModuleId = payload?.params?.id || null;
         this.loadAssignments();
-        this.updateDom(this.config.animationSpeed);
+        this.show(this.config.animationSpeed);
         break;
 
       case "HIDE_ALL_MODULES":
       case "HIDE_MODULES":
         this.currentView = "hidden";
-        this.updateDom(this.config.animationSpeed);
+        this.hide(this.config.animationSpeed);
         break;
     }
   },
