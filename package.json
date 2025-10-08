@@ -1,0 +1,23 @@
+{
+  "name": "mmm-uniassignments",
+  "version": "1.0.0",
+  "description": "MagicMirror² module for displaying university assignments from Todoist",
+  "main": "MMM-UniAssignments.js",
+  "scripts": {
+    "start": "./start-backend.sh",
+    "test": "cd backend && python3 todoist_sync.py"
+  },
+  "keywords": [
+    "MagicMirror",
+    "uni",
+    "assignments",
+    "todoist",
+    "student"
+  ],
+  "author": "Justus Waechter",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/MMM-UniAssignments"
+  }
+}
