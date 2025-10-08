@@ -14,6 +14,7 @@ MagicMirror² module to display university assignments from Todoist with Flask b
 - 🎨 **Modern UI** - Clean, minimalist dark design
 - ⚡ **Flask Backend** - Python API with JSON caching
 - 🚀 **Systemd Service** - Automatic backend startup
+- 🏷️ **Optional Labels** - Sync ALL tasks or filter by label
 
 ## 🚀 Quick Start
 
@@ -46,45 +47,54 @@ Add to your `config/config.js`:
 }
 ```
 
-## 📝 Todoist Setup
+## 📝 Todoist Setup - Simplified!
 
-### 1. Create Project Structure
+### Option 1: Without Labels (Recommended - Simpler!)
 
-1. Create project "UNI" in Todoist
+1. Create project **"UNI"** in Todoist
 2. Add sections for your courses:
    - Mathematics
    - Computer Science
    - Physics
-   - etc.
+3. Add tasks **directly in sections** - DONE!
 
-### 2. Create Label
-
-1. Settings → Labels
-2. Create label "abgabe"
-
-### 3. Add Assignments
-
-Create tasks with:
-- Title: Assignment name
-- Label: `#abgabe`
-- Due date: Deadline
-- Project: UNI > [Your Course]
-
-Example:
+**Example Task:**
 ```
-Problem Set 2 #abgabe
+Title: Problem Set 2
 Due: tomorrow 23:59
 Project: UNI > Mathematics
 ```
 
-### 4. Get API Token
+**NO label needed!** All tasks in "UNI" project will be synced.
+
+**Backend config:**
+```env
+TODOIST_API_TOKEN=your_token_here
+TODOIST_PROJECT=UNI
+ASSIGNMENT_LABEL=        # ← Leave empty for all tasks
+```
+
+### Option 2: With Labels (Advanced - More Control)
+
+If you want to filter tasks (e.g., only show "abgabe" tasks):
+
+1. Create project "UNI"
+2. Add sections (courses)
+3. Create label "abgabe" in Settings → Labels
+4. Add tasks with `#abgabe` label
+
+**Backend config:**
+```env
+TODOIST_API_TOKEN=your_token_here
+TODOIST_PROJECT=UNI
+ASSIGNMENT_LABEL=abgabe  # ← Only sync tasks with this label
+```
+
+### Get API Token
 
 1. Visit https://todoist.com/prefs/integrations
 2. Copy your API token
-3. Add to `backend/.env`:
-   ```env
-   TODOIST_API_TOKEN=your_token_here
-   ```
+3. Add to `backend/.env`
 
 ## 🔧 Configuration Options
 
@@ -189,10 +199,13 @@ cat backend/.env
 
 ### Tasks not syncing
 
-Ensure tasks have:
-- Label `#abgabe`
-- Due date set
-- In project "UNI"
+**With labels (ASSIGNMENT_LABEL set):**
+- Ensure tasks have the label (e.g., `#abgabe`)
+
+**Without labels (ASSIGNMENT_LABEL empty):**
+- All tasks in "UNI" project will be synced
+- Ensure tasks are in sections
+- Ensure tasks have due dates (optional but recommended)
 
 ## 📚 Documentation
 

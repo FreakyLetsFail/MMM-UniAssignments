@@ -57,15 +57,17 @@ class TodoistSync:
         print(f"Loaded {len(self.sections)} sections (modules)")
 
     def _load_tasks(self) -> List[Dict]:
-        """Lädt alle Tasks mit Label 'abgabe' aus dem Projekt"""
+        """Lädt alle Tasks aus dem Projekt (optional mit Label-Filter)"""
         tasks = self._get(f'tasks?project_id={self.project_id}')
 
         assignments = []
 
         for task in tasks:
-            # Nur Tasks mit dem Assignment-Label
-            if self.assignment_label not in [label.lower() for label in task.get('labels', [])]:
-                continue
+            # Optional: Nur Tasks mit dem Assignment-Label
+            # Wenn assignment_label leer ist, alle Tasks nehmen
+            if self.assignment_label:
+                if self.assignment_label not in [label.lower() for label in task.get('labels', [])]:
+                    continue
 
             # Section (Modul) auslesen
             section_id = task.get('section_id')
